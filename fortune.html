@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>占いの館</title>
+
+<style>
+
+body{
+  margin:0;
+  height:100vh;
+
+  overflow:hidden;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+
+  background-image:url("./fortune-background.png");
+
+  background-size:cover;
+  background-position:center;
+
+  font-family:sans-serif;
+
+}
+
+/* 水晶玉 */
+.crystal-ball{
+
+  width:280px;
+
+  position:absolute;
+
+  top:150px;
+
+  pointer-events:none;
+}
+
+.fortune-result{
+
+  position:absolute;
+
+  top:380px;
+
+  width:200px;
+
+  text-align:center;
+
+  font-size:40px;
+
+  color:rgb(0, 0, 0);
+
+  z-index:10;
+
+}
+/* ぷに */
+.fortune-button:active{
+
+  transform:scale(0.92);
+
+}
+.fortune-btn{
+
+  position:absolute;
+
+  bottom:400px;
+
+  padding:15px 40px;
+
+  border:none;
+
+  border-radius:20px;
+
+  background:#b06cff;
+
+  color:white;
+
+  font-size:24px;
+
+  cursor:pointer;
+
+  transition:0.1s;
+
+}
+
+.fortune-btn:active{
+
+  transform:scale(0.92);
+
+}
+
+</style>
+
+</head>
+
+<body>
+<div class="fortune-result"
+     id="fortuneResult">
+
+  
+
+</div>
+<button class="fortune-btn"
+        onclick="drawFortune()">
+
+  占う
+
+</button>
+<!-- 水晶玉 -->
+<img src="crystal-ball.png"
+     class="crystal-ball">
+
+<script>
+
+
+
+const fortunes = [
+
+  "大吉<br>⭐︎⭐︎⭐︎⭐︎",
+
+  "中吉<br>⭐︎⭐︎⭐︎",
+  "中吉<br>⭐︎⭐︎⭐︎",
+  "中吉<br>⭐︎⭐︎⭐︎",
+  "中吉<br>⭐︎⭐︎⭐︎",
+
+  "小吉<br>⭐︎⭐︎",
+  "小吉<br>⭐︎⭐︎",
+  "小吉<br>⭐︎⭐︎",
+  "小吉<br>⭐︎⭐︎",
+
+  "凶<br>⭐︎"
+
+];
+
+function drawFortune(){
+
+  const randomFortune =
+
+    fortunes[
+      Math.floor(
+        Math.random() * fortunes.length
+      )
+    ];
+
+  document
+    .getElementById("fortuneResult")
+    .innerHTML = randomFortune;
+
+}
+
+
+
+
+</script>
+
+
+
+
+</body>
+
+</html>
