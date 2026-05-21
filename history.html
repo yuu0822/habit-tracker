@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>過去の記録</title>
+
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  overflow-y:auto;
+  background-image:url("./background.png");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  font-family:sans-serif;
+}
+
+/* 戻る */
+.back-btn{
+  position:fixed;
+  top:20px;
+  left:20px;
+  padding:12px 24px;
+  border:none;
+  border-radius:20px;
+  background:rgb(174, 0, 255);
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+  z-index:99999;
+}
+
+.back-btn:active{
+  transform:scale(0.92);
+}
+
+/* 全体 */
+.container{
+  padding:100px 20px 80px;
+}
+
+/* タイトル */
+.title{
+  text-align:center;
+  color:white;
+  font-size:34px;
+  margin-bottom:30px;
+}
+
+/* セクション */
+.section-title{
+  color:white;
+  font-size:24px;
+  margin:30px 0 15px;
+}
+
+/* カード */
+.card{
+  background:rgba(255,255,255,0.9);
+  border-radius:20px;
+  padding:18px;
+  margin-bottom:15px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.15);
+}
+
+.card h2{
+  margin:0;
+  font-size:20px;
+}
+
+.card p{
+  margin:6px 0 0;
+  color:#555;
+}
+
+/* 空 */
+.empty{
+  background:rgba(255,255,255,0.9);
+  border-radius:20px;
+  padding:18px;
+  color:#555;
+}
+
+/* 削除ボタン */
+.clear-btn{
+  margin-top:30px;
+  width:100%;
+  border:none;
+  border-radius:20px;
+  padding:15px;
+  background:black;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.clear-btn:active{
+  transform:scale(0.95);
+}
+
+/* グラフ */
+.graph-card{
+  background:white;
+  border-radius:20px;
+  padding:20px;
+  margin-top:25px;
+  text-align:center;
+  box-shadow:0 4px 12px rgba(0,0,0,0.15);
+}
+
+.graph-card h2{
+  margin-bottom:20px;
+  color:#5a2d82;
+}
+
+.bar-chart{
+  display:flex;
+  justify-content:space-around;
+  align-items:flex-end;
+  height:200px;
+  border-bottom:2px solid #ccc;
+  padding:10px;
+}
+
+.bar-group{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.bar{
+  width:30px;
+  height:20px;
+  background:linear-gradient(to top,#7b2cbf,#c77dff);
+  border-radius:8px 8px 0 0;
+  transition:height 0.3s ease;
+}
+
+.bar-group span{
+  margin-top:8px;
+  font-weight:bold;
+}
+
+/* スマホ */
+@media screen and (max-width:500px){
+  .title{
+    font-size:28px;
+  }
+
+  .section-title{
+    font-size:20px;
+  }
+
+  .bar{
+    width:24px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 戻る -->
+<button class="back-btn" onclick="location.href='index.html'">
+戻る
+</button>
+
+<div class="container">
+
+  <h1 class="title">過去の記録</h1>
+
+  <!-- 習慣 -->
+  <h2 class="section-title">習慣履歴</h2>
+  <div id="habitHistory"></div>
+
+  <!-- 占い -->
+  <h2 class="section-title">占い履歴</h2>
+  <div id="fortuneHistory"></div>
+
+  <!-- グラフ -->
+  <div class="graph-card">
+    <h2>達成グラフ 📊</h2>
+    <div class="bar-chart">
+      <div class="bar-group">
+        <div class="bar" id="bar0"></div>
+        <span>月</span>
+      </div>
+      <div class="bar-group">
+        <div class="bar" id="bar1"></div>
+        <span>火</span>
+      </div>
+      <div class="bar-group">
+        <div class="bar" id="bar2"></div>
+        <span>水</span>
+      </div>
+      <div class="bar-group">
+        <div class="bar" id="bar3"></div>
+        <span>木</span>
+      </div>
+      <div class="bar-group">
+        <div class="bar" id="bar4"></div>
+        <span>金</span>
+      </div>
+      <div class="bar-group">
+        <div class="bar" id="bar5"></div>
+        <span>土</span>
+      </div>
+      <div class="bar-group">
+        <div class="bar" id="bar6"></div>
+        <span>日</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 全削除 -->
+  <button class="clear-btn" onclick="clearHistory()">
+    すべて削除
+  </button>
+
+</div>
+
+<script>
+/* 履歴表示 */
+function loadHistory() {
+  const habitData =
+    JSON.parse(localStorage.getItem("habitData")) || [];
+
+  const fortuneData =
+    JSON.parse(localStorage.getItem("fortuneData")) || [];
+
+  const habitBox =
+    document.getElementById("habitHistory");
+
+  const fortuneBox =
+    document.getElementById("fortuneHistory");
+
+  habitBox.innerHTML = "";
+  fortuneBox.innerHTML = "";
+
+  /* 習慣 */
+  if (habitData.length === 0) {
+    habitBox.innerHTML = `
+      <div class="empty">
+        まだ習慣記録がありません
+      </div>`;
+  } else {
+    habitData.forEach(item => {
+      habitBox.innerHTML += `
+        <div class="card">
+          <h2>${item.text}</h2>
+          <p>期限：${item.date || "未設定"}</p>
+        </div>
+      `;
+    });
+  }
+
+  /* 占い */
+  if (fortuneData.length === 0) {
+    fortuneBox.innerHTML = `
+      <div class="empty">
+        まだ占い履歴がありません
+      </div>`;
+  } else {
+    fortuneData.forEach(item => {
+      fortuneBox.innerHTML += `
+        <div class="card">
+          <h2>${item.result}</h2>
+          <p>${item.date}</p>
+        </div>
+      `;
+    });
+  }
+}
+
+/* 棒グラフ */
+function loadGraph() {
+  const history =
+    JSON.parse(localStorage.getItem("habitData")) || [];
+
+  const days = [0,0,0,0,0,0,0];
+
+  history.forEach(item => {
+    if (!item.date) return;
+
+    const date = new Date(item.date);
+    let day = date.getDay();
+
+    day = day === 0 ? 6 : day - 1;
+    days[day]++;
+  });
+
+  const max = Math.max(...days, 1);
+
+  days.forEach((count, i) => {
+    const bar =
+      document.getElementById(`bar${i}`);
+
+    const height =
+      (count / max) * 150 + 20;
+
+    bar.style.height = `${height}px`;
+  });
+}
+
+/* 全削除 */
+function clearHistory() {
+  if (confirm("履歴を全部削除しますか？")) {
+    localStorage.removeItem("habitData");
+    localStorage.removeItem("fortuneData");
+    loadHistory();
+    loadGraph();
+  }
+}
+
+/* 初回 */
+window.onload = function() {
+  loadHistory();
+  loadGraph();
+};
+</script>
+
+</body>
+</html>
