@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>タイトル</title>
+
+<style>
+
+/* ===== 背景 ===== */
+body{
+  margin:0;
+  min-height:100vh;
+  overflow-x:hidden;
+
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+
+  padding-top:280px;
+
+  background-image:url("background.png");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+
+/* ===== 全体まとめ ===== */
+.container{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:20px;
+
+  position:relative;
+  z-index:2;
+
+  transform:translateY(200px);
+}
+
+/* ===== スマホ専用 ===== */
+@media screen and (max-width:500px){
+
+  .container{
+    transform:translateY(250px);
+  }
+
+  .logo{
+    width:320px;
+  }
+
+  .start-button,
+  .fortune-button,
+  .history-button{
+    width:240px;
+  }
+
+  .author{
+    font-size:13px;
+    padding-right:18px;
+  }
+}
+
+/* ===== ロゴ ===== */
+.logo{
+  width:600px;
+  margin-bottom:-30px;
+}
+
+/* ===== 共通ボタン ===== */
+.start-button,
+.fortune-button,
+.history-button{
+  width:360px;
+  cursor:pointer;
+  transition:0.15s;
+
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+
+  position:relative;
+  z-index:3;
+}
+
+.start-button:active,
+.fortune-button:active,
+.history-button:active{
+  transform:scale(0.92);
+}
+
+/* ===== 作者名 ===== */
+.author{
+  width:100%;
+  text-align:right;
+
+  padding-right:25px;
+  margin-top:10px;
+
+  color:rgb(212, 0, 255);
+  font-size:14px;
+  opacity:0.9;
+
+  box-sizing:border-box;
+}
+
+</style>
+
+<link rel="icon" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- ロゴ -->
+  <img src="logo.png"
+       class="logo">
+
+  <!-- はじめる -->
+  <img src="newstart.png"
+       class="start-button"
+       onclick="startApp()">
+
+  <!-- 占いの館 -->
+  <img src="fortune-button.png"
+       class="fortune-button"
+       onclick="goFortune()">
+
+  <!-- 過去の記録 -->
+  <img src="history-button.png"
+       class="history-button"
+       onclick="goHistory()">
+
+  <!-- 作者 -->
+  <div class="author">
+    作者:OKM
+  </div>
+
+</div>
+
+<script>
+
+function startApp(){
+  const btn =
+    document.querySelector(".start-button");
+
+  btn.style.transform = "scale(0.92)";
+
+  setTimeout(() => {
+    location.href = "other.html";
+  }, 120);
+}
+
+function goFortune(){
+  const btn =
+    document.querySelector(".fortune-button");
+
+  btn.style.transform = "scale(0.92)";
+
+  setTimeout(() => {
+    location.href = "fortune.html";
+  }, 120);
+}
+
+function goHistory(){
+  const btn =
+    document.querySelector(".history-button");
+
+  btn.style.transform = "scale(0.92)";
+
+  setTimeout(() => {
+    location.href = "history.html";
+  }, 120);
+}
+
+</script>
+
+</body>
+</html>
